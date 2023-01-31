@@ -1,11 +1,11 @@
-#undef slots
-#include "torch/torch.h"
-#include "torch/jit.h"
-#include "torch/nn.h"
-#include "torch/script.h"
-#define slots Q_SLOTS
-
-#include "MainWindow.hpp"
+//#undef slots
+//#include "torch/torch.h"
+//#include "torch/jit.h"
+//#include "torch/nn.h"
+//#include "torch/script.h"
+//#define slots Q_SLOTS
+//
+#include "../MainWindow.hpp"
 
 #include <QApplication>
 #include <QLocale>
@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     const QStringList uiLanguages = QLocale::system().uiLanguages();
     for (const QString &locale : uiLanguages)
 	{
-        const QString baseName = "PreTrainedApp_" + QLocale(locale).name();
+		const QString baseName = "DLTrainingApp_" + QLocale(locale).name();
         if (translator.load(":/i18n/" + baseName))
 		{
             a.installTranslator(&translator);
@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
         }
     }
     MainWindow w;
+	w.setWindowTitle(PROJECT_TITLE);
     w.show();
     return a.exec();
 }

@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGroupBox" name="groupBox_dataset">
+   <widget class="QGroupBox" name="groupBox_setPath">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="title">
-     <string>set Data path</string>
+     <string>Set Data path</string>
     </property>
     <widget class="QPushButton" name="pushButton_imgPath">
      <property name="geometry">
@@ -53,7 +53,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="groupBox_setDevice">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -85,9 +85,61 @@
       </rect>
      </property>
      <property name="text">
-      <string>Set Device</string>
+      <string>Set</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_setModel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>130</y>
+      <width>231</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Model</string>
+    </property>
+    <widget class="QPushButton" name="pushButton_designModel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>100</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Design</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_saveModel">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>20</y>
+       <width>100</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Show</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="pushButton_exitProgram">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>250</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Exit</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -96,7 +148,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

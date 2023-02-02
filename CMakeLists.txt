@@ -27,6 +27,7 @@ set(PROJECT_SOURCES
         mainwindow.ui
         MainWindow.cpp
         ./src/main.cpp
+        ./src/netImpl.cpp
         )
 
 qt_add_executable(${OUTPUT_ELF}

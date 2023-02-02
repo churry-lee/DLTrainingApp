@@ -16,6 +16,11 @@ NetImpl::NetImpl()
 	register_module("fc2", fc2);
 }
 
+NetImpl::NetImpl(std::vector<LAYER*>& layers)
+{
+	register_module("conv1", layers[0]->conv);
+}
+
 torch::Tensor NetImpl::Forward(torch::Tensor x)
 {
 	x = torch::max_pool2d(conv1->forward(x), {2, 2});

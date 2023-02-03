@@ -1,10 +1,3 @@
-//#undef slots
-//#include "torch/torch.h"
-//#include "torch/jit.h"
-//#include "torch/nn.h"
-//#include "torch/script.h"
-//#define slots Q_SLOTS
-//
 #include "../MainWindow.hpp"
 
 #include <QApplication>

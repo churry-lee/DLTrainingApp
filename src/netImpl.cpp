@@ -16,29 +16,41 @@ NetImpl::NetImpl()
 	register_module("fc2", fc2);
 }
 
-NetImpl::NetImpl(std::vector<LAYER*>& layers)
+NetImpl::NetImpl(std::vector<torch::nn::Sequential>& layers)
 {
-	register_module("conv1", layers[0]->conv);
+	int layer_num = 0;
+	this->m_layers = layers;
+	for (auto & layer : m_layers)
+	{
+		register_module("layer" + std::to_string(layer_num), layer);
+		layer_num += 1;
+	}
+
 }
 
 torch::Tensor NetImpl::Forward(torch::Tensor x)
 {
-	x = torch::max_pool2d(conv1->forward(x), {2, 2});
-	x = torch::relu(x);
+//	x = torch::max_pool2d(conv1->forward(x), {2, 2});
+//	x = torch::relu(x);
+//
+//	x = torch::max_pool2d(conv2_drop->forward(conv2->forward(x)), {2, 2});
+//	x = torch::relu(x);
+//
+//	x = x.view({-1, 320}); // reshape tensor, -1 means 'total_num / other dimension(320)' => torch.Size(1, 320), == x.view({1, 320})
+//
+//	x = fc1->forward(x);
+//	x = torch::relu(x);
+//
+//	x = torch::dropout(x, 0.5, is_training());
+//
+//	x = fc2->forward(x);
+//	x = torch::softmax(x, 1);
+//	x = torch::log_softmax(x, 1);
 
-	x = torch::max_pool2d(conv2_drop->forward(conv2->forward(x)), {2, 2});
-	x = torch::relu(x);
+	for (auto & layer : m_layers)
+		x = layer->forward(x);
 
-	x = x.view({-1, 320}); // reshape tensor, -1 means 'total_num / other dimension(320)' => torch.Size(1, 320), == x.view({1, 320})
-
-	x = fc1->forward(x);
-	x = torch::relu(x);
-
-	x = torch::dropout(x, 0.5, is_training());
-
-	x = fc2->forward(x);
 	x = torch::softmax(x, 1);
-	x = torch::log_softmax(x, 1);
 
 	return x;
 }

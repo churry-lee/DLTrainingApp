@@ -7,9 +7,12 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_C_COMPILER /usr/bin/clang)
-set(CMAKE_CXX_COMPILER /usr/bin/clang++)
-set(CMAKE_APPLE_SILICON_PROCESSOR arm64)
+
+if(${APPLE})
+    set(CMAKE_C_COMPILER /usr/bin/clang)
+    set(CMAKE_CXX_COMPILER /usr/bin/clang++)
+    set(CMAKE_APPLE_SILICON_PROCESSOR arm64)
+endif()
 
 include(dependency.cmake)
 
@@ -26,8 +29,10 @@ set(PROJECT_SOURCES
         ${TS_FILES}
         mainwindow.ui
         MainWindow.cpp
-        ./src/main.cpp
-        ./src/netImpl.cpp
+        src/main.cpp
+        src/netImpl.cpp
+        src/subWidget.cpp
+        src/train.cpp
         )
 
 qt_add_executable(${OUTPUT_ELF}
@@ -70,4 +75,18 @@ target_compile_definitions( ${OUTPUT_ELF} PUBLIC
         PROJECT_TITLE="${PROJECT_NAME}"
         )
 
-target_compile_options(${OUTPUT_ELF} PUBLIC -Wall -Wextra -pedantic)
+if (MSVC)
+    target_compile_options(${OUTPUT_ELF} PUBLIC /W3)
+else()
+    target_compile_options(${OUTPUT_ELF} PUBLIC -Wall -Wextra -pedantic)
+endif(MSVC)
+
+
+if (MSVC)
+    file(GLOB TORCH_DLLS "${LIBTORCH_INSTALL_PATH}/lib/*.dll")
+    add_custom_command(TARGET ${OUTPUT_ELF}
+            POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${TORCH_DLLS}
+            $<TARGET_FILE_DIR:${OUTPUT_ELF}>)
+endif (MSVC)

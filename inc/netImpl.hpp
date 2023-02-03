@@ -4,7 +4,7 @@
 #include <vector>
 #include <torch/torch.h>
 
-struct LAYER
+struct LAYER_COMPONENTS
 {
 	torch::nn::Conv2d conv{ nullptr };
 	torch::nn::BatchNorm2d batch_norm{ nullptr };
@@ -17,6 +17,11 @@ struct LAYER
 	torch::nn::Softmax softmax{ nullptr };
 };
 
+//struct LAYER
+//{
+//	torch::nn::Sequential layer1{ nullptr };
+//};
+
 class NetImpl :  public torch::nn::Module
 {
 private:
@@ -26,11 +31,11 @@ private:
 	torch::nn::Linear fc1{ nullptr };         // fully connect
 	torch::nn::Linear fc2{ nullptr };         // fully connect
 
+	std::vector<torch::nn::Sequential> m_layers;
 public:
 	NetImpl();
-	NetImpl(std::vector<LAYER *> &layers);
+	NetImpl(std::vector<torch::nn::Sequential> &layers);
 	torch::Tensor Forward(torch::Tensor input);
-
 };
 
 #endif //_NETIMPL_HPP_

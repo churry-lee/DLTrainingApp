@@ -19,8 +19,8 @@ elseif(${APPLE})
     set(CMAKE_PREFIX_PATH ${OPENCV_INSTALL_PATH} ${LIBTORCH_INSTALL_PATH})
 endif(MSVC)
 
-#find_package(OpenCV REQUIRED)
-#set(OPENCV_LIBRARY opencv_core opencv_highgui opencv_imgproc opencv_video opencv_videoio opencv_dnn)
+find_package(OpenCV REQUIRED)
+set(OPENCV_LIBRARY opencv_core opencv_highgui opencv_imgproc opencv_video opencv_videoio opencv_dnn)
 
 find_package(Torch REQUIRED)
 

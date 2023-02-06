@@ -18,14 +18,10 @@ NetImpl::NetImpl()
 
 NetImpl::NetImpl(std::vector<torch::nn::Sequential>& layers)
 {
-	int layer_num = 0;
 	this->m_layers = layers;
-	for (auto & layer : m_layers)
-	{
-		register_module("layer" + std::to_string(layer_num), layer);
-		layer_num += 1;
-	}
 
+	for (int layer_num=0; layer_num < m_layers.size(); layer_num++)
+		register_module("layer"+std::to_string(layer_num), m_layers[layer_num]);
 }
 
 torch::Tensor NetImpl::Forward(torch::Tensor x)

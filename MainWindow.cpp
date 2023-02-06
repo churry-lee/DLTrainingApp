@@ -101,9 +101,9 @@ void MainWindow::okLayerWidget()
 
 	components->conv = torch::nn::Conv2d(torch::nn::Conv2dOptions(in_channels, out_channels, kernel).stride(stride).padding(padding));
 	components->maxpool = torch::nn::MaxPool2d(maxpool);
+	components->dropout = torch::nn::Dropout2d(torch::nn::Dropout2dOptions().p(dropout).inplace(true));
 	components->relu = torch::nn::ReLU();
-	components->dropout = torch::nn::Dropout2d(dropout);
-	torch::nn::Sequential layer{components->conv, components->maxpool, components->relu, components->dropout};
+	torch::nn::Sequential layer{components->conv, components->maxpool, components->dropout, components->relu};
 	layers.push_back(layer);
 	sub_components_widget->closeWidget();
 }
@@ -112,25 +112,6 @@ void MainWindow::closeLayerWidget()
 {
 	sub_components_widget->closeWidget();
 }
-
-//void MainWindow::addComponentConv()
-//{
-//	sub_components_widget = new subWidget("Add Components", 300, 200);
-//
-//	lineEdit_in_channels = sub_components_widget->addLabel("In channels", 20, 10, 100, 32);
-//	lineEdit_out_channels = sub_components_widget->addLabel("Out channels", 20, 30, 100, 32);
-//	lineEdit_kernel = sub_components_widget->addLabel("Kernel", 20, 50, 100, 32);
-//	lineEdit_stride = sub_components_widget->addLabel("Stride", 20, 70, 100, 32);
-//	lineEdit_padding = sub_components_widget->addLabel("Padding", 20, 90, 100, 32);
-//
-//	QPushButton * pushButton_ok = sub_components_widget->addPushButton("OK", 80, 158, 100, 32);
-//	connect(pushButton_ok, SIGNAL(clicked(bool)), this, SLOT(okComponentsWidget()));
-//
-//	QPushButton * pushButton_cancel = sub_components_widget->addPushButton("Cancel", 190, 158, 100, 32);
-//	connect(pushButton_cancel, SIGNAL(clicked(bool)), this, SLOT(closeComponentsWidget()));
-//
-//	sub_components_widget->showWidget();
-//}
 
 void MainWindow::addLayer()
 {

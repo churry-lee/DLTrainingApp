@@ -30,9 +30,10 @@ set(PROJECT_SOURCES
         mainwindow.ui
         MainWindow.cpp
         src/main.cpp
-        src/netImpl.cpp
         src/subWidget.cpp
+        src/netImpl.cpp
         src/train.cpp
+        src/myDataset.cpp
         )
 
 qt_add_executable(${OUTPUT_ELF}

@@ -20,8 +20,13 @@ NetImpl::NetImpl(std::vector<torch::nn::Sequential>& layers)
 {
 	this->m_layers = layers;
 
+
 	for (int layer_num=0; layer_num < m_layers.size(); layer_num++)
 		register_module("layer"+std::to_string(layer_num), m_layers[layer_num]);
+
+
+	this->fc1 = torch::nn::Linear(64, 10);
+	register_module("fc1", fc1);
 }
 
 torch::Tensor NetImpl::Forward(torch::Tensor x)
@@ -46,7 +51,8 @@ torch::Tensor NetImpl::Forward(torch::Tensor x)
 	for (auto & layer : m_layers)
 		x = layer->forward(x);
 
-	x = torch::softmax(x, 1);
+	x = fc1->forward(x);
+	x = torch::softmax(x, 4);
 
 	return x;
 }

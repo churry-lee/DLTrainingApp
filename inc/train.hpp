@@ -8,6 +8,8 @@
 #include <vector>
 
 #include "netImpl.hpp"
+#include "myDataset.hpp"
+
 #include "torch/torch.h"
 
 //const std::string DATA_ROOT = std::string(EXCUTABLE_OUTPUT_PATH) + std::string("/data");
@@ -18,17 +20,15 @@ const int64_t TEST_BATCH_SIZE = 1000;
 const int64_t NUMBER_OF_EPOCHS = 10;
 const int64_t LOG_INTERVAL = 10;
 
-class Train
+class TrainModel
 {
 public:
-	template <typename DataLoader>
-	Train(size_t epoch, NetImpl & model, torch::Device device, DataLoader & data_loader, torch::optim::Optimizer & optimizer, size_t dataset_size);
-	~Train();
+	TrainModel(int epoch, NetImpl & model, torch::Device device, myDataset & dataset);
+	~TrainModel();
 
 private:
-	template <typename DataLoader>
-	void train(size_t epoch, NetImpl & model, torch::Device device, DataLoader & data_loader, torch::optim::Optimizer & optimizer, size_t dataset_size);
-
+//	template <typename DataLoader>
+	void train(int epoch, NetImpl & model, torch::Device device, myDataset & dataset, torch::optim::Optimizer & optimizer, size_t dataset_size);
 };
 
 #endif //_TRAIN_HPP_

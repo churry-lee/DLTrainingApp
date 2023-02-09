@@ -19,16 +19,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 void MainWindow::on_pushButton_imgPath_clicked()
 {
-	QString searchLocation = QFileDialog::getExistingDirectory(this, "Set image data folder", QDir::currentPath(), QFileDialog::ShowDirsOnly);
-	SPDLOG_INFO("Image Path: " + searchLocation.toStdString());
+	QString loc = QFileDialog::getExistingDirectory(this, "Set image data folder", QDir::currentPath(), QFileDialog::ShowDirsOnly);
+	SPDLOG_INFO("Image Path: " + loc.toStdString());
 
-	// TODO: 이미지 파일 경로를 DataSet class에 전달
+	image_data_dir = loc.toStdString() + "/";
 }
 
 void MainWindow::on_pushButton_labelPath_clicked()
 {
-	QString searchLocation = QFileDialog::getExistingDirectory(this, "Set image data folder", QDir::currentPath(), QFileDialog::ShowDirsOnly);
-	SPDLOG_INFO("Label Path: " + searchLocation.toStdString());
+	QString loc = QFileDialog::getOpenFileName(this, "Set label data file", QDir::currentPath(), "Files (*.csv)");
+	SPDLOG_INFO("Label File: " + loc.toStdString());
+
+	label_file_dir = loc.toStdString();
+}
+
+void MainWindow::on_pushButton_dataLoad_clicked()
+{
+	dataset = new myDataset(label_file_dir, image_data_dir);
 }
 
 void MainWindow::on_pushButton_setDevice_clicked()
@@ -70,10 +77,6 @@ void MainWindow::on_pushButton_designModel_clicked()
 	sub_model_widget->showWidget();
 }
 
-void MainWindow::on_pushButton_train_clicked()
-{
-	SPDLOG_INFO("train model");
-}
 void MainWindow::closeModelWidget()
 {
 	SPDLOG_INFO("Widget closed");
@@ -143,9 +146,15 @@ void MainWindow::addLayer()
 
 void MainWindow::generateModel()
 {
-	NetImpl * net = new NetImpl(layers);
+	net = new NetImpl(layers);
 	SPDLOG_INFO("Model Implement\n");
 	std::cout << *net << std::endl;
+}
+
+void MainWindow::on_pushButton_train_clicked()
+{
+	SPDLOG_INFO("train model");
+	TrainModel * train = new TrainModel(10, *net, device, *dataset);
 }
 
 MainWindow::~MainWindow()

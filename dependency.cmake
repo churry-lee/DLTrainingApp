@@ -1,8 +1,8 @@
 if(MSVC)
-    set(CUDA_TOOLKIT_ROOT_DIR C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.6)
-#    set(OPENCV_INSTALL_PATH D:/local_lib/opencv-454-win/lib)
+    set(CUDA_TOOLKIT_ROOT_DIR "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.6")
+    set(OPENCV_INSTALL_PATH "D:/local_lib/opencv-v4.7.0")
 
-    set(LIBTORCH_INSTALL_PATH D:/local_lib/libtorch-win-debug)
+    set(LIBTORCH_INSTALL_PATH D:/local_lib/libtorch-v1.13.0)
     set(QT_INSTALL_PATH D:/local_lib/qt-v6.4.2/6.4.2/msvc2019_64/lib/cmake)
     set(CMAKE_PREFIX_PATH ${OPENCV_INSTALL_PATH} ${LIBTORCH_INSTALL_PATH} ${QT_INSTALL_PATH})
 
@@ -20,7 +20,7 @@ elseif(${APPLE})
 endif(MSVC)
 
 find_package(OpenCV REQUIRED)
-set(OPENCV_LIBRARY opencv_core opencv_highgui opencv_imgproc opencv_video opencv_videoio opencv_dnn)
+set(OPENCV_LIBRARY opencv_core opencv_highgui opencv_imgproc opencv_dnn)
 
 find_package(Torch REQUIRED)
 

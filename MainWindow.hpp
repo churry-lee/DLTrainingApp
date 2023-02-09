@@ -30,6 +30,7 @@
 #include "subWidget.hpp"
 #include "netImpl.hpp"
 #include "train.hpp"
+#include "myDataset.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -42,17 +43,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-	torch::Device device = torch::Device(torch::kCPU);
 
 private:
     Ui::MainWindow *ui;
-
 	//////////////////////////////////////////////////////////
 	subWidget * sub_model_widget;
 	subWidget * sub_components_widget;
-
-	LAYER_COMPONENTS * components;
-	std::vector<torch::nn::Sequential> layers;
 	//////////////////////////////////////////////////////////
 	QLineEdit * lineEdit_in_channels;
 	QLineEdit * lineEdit_out_channels;
@@ -61,7 +57,14 @@ private:
 	QLineEdit * lineEdit_padding;
 	QLineEdit * lineEdit_maxpool;
 	QLineEdit * lineEdit_dropout;
-
+	//////////////////////////////////////////////////////////
+	std::string image_data_dir;
+	std::string label_file_dir;
+	//////////////////////////////////////////////////////////
+	torch::Device device = torch::Device(torch::kCPU);
+	//////////////////////////////////////////////////////////
+	LAYER_COMPONENTS * components;
+	std::vector<torch::nn::Sequential> layers;
 	int in_channels{0};
 	int out_channels{0};
 	int kernel{0};
@@ -70,9 +73,14 @@ private:
 	int maxpool{0};
 	float dropout{0.0};
 
+	NetImpl * net;
+	//////////////////////////////////////////////////////////
+	myDataset * dataset;
+
 private slots:
 	void on_pushButton_imgPath_clicked();
 	void on_pushButton_labelPath_clicked();
+	void on_pushButton_dataLoad_clicked();
 
 	void on_pushButton_setDevice_clicked();
 

@@ -1,32 +1,35 @@
 #include "myDataset.hpp"
 
-myDataset::myDataset(const std::string & labels, const std::string & root)
+myDataset::myDataset(const std::string & label_path, const std::string & img_path)
 {
+	SPDLOG_INFO("Make custom Dataset object");
+	this->m_label_path = label_path;
+	this->m_img_path = img_path;
 
+	data.clear();
+	readData(m_label_path);
 }
 
 void myDataset::readData(const std::string& path)
 {
-	//Stream to text file
-	std::ifstream name_stream;
-	name_stream.open(path);
-	if (!name_stream.good()) {
-		std::cout << "Could not open file: " << path << std::endl;
-	}
+	std::ifstream fin;
+	std::string file_name, label;
 
-	//load file names and labels to ram
-	int* temp_idx = 0;
-	while (name_stream.good())
+	fin.open(path, std::ios::in);
+	if (!fin.good())
+		SPDLOG_ERROR("Could not open file: " + path);
+
+	while (!fin.eof())
 	{
-		std::string img_name;
-		std::string label;
-		int int_label;
-		getline(name_stream, img_name, ';');
-		getline(name_stream, label, '\n');
-		int_label = std::stoi(label);
-		data.push_back(make_tuple(img_name, int_label));
-		temp_idx++;
+		getline(fin, file_name, ',');
+		getline(fin, label, ',');
+		getline(fin, label, ',');
+		getline(fin, label, ',');
+		getline(fin, label, '\n');
+
+		data.push_back({file_name, std::stoi(label)});
 	};
+	data.erase(data.end()-1);
 }
 
 torch::optional<size_t> myDataset::size() const
@@ -36,7 +39,7 @@ torch::optional<size_t> myDataset::size() const
 
 torch::data::Example<> myDataset::get(size_t index)
 {
-	cv::Mat in_img = cv::imread(std::get<0>(data[index]));
+	cv::Mat in_img = cv::imread(m_img_path + std::get<0>(data[index]) + ".jpg");
 	cv::Mat img;
 
 	cv::cvtColor(in_img, img, cv::COLOR_BGR2GRAY);
@@ -44,7 +47,7 @@ torch::data::Example<> myDataset::get(size_t index)
 	cv::Size size(128, 128);
 	cv::resize(img, img, size);// set size to 128x128
 
-	torch::Tensor tensor_image = torch::from_blob(img.data, { img.rows, img.cols,1}, at::kFloat);
+	torch::Tensor tensor_image = torch::from_blob(img.data, {img.rows, img.cols, 1}, at::kFloat);
 	tensor_image = tensor_image.permute({ 2, 0, 1 });
 
 	torch::Tensor label_tensor = torch::full({ 1 }, std::get<1>(data[index]));
